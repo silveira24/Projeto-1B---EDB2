@@ -15,6 +15,7 @@ int filhoEsquerdo(int i);
 int filhoDireito(int i);
 void inserirAeronave(Heap* heap, Aeronave* aeronave);
 Aeronave* consultarMaiorPrioridade (Heap* heap);
+Aeronave* removerMaiorPrioridade (Heap* heap);
 void exibirHeap(Heap heap);
 
 #endif
