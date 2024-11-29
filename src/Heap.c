@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/Heap.h"
 
@@ -18,6 +19,41 @@ int filhoEsquerdo (int i) {
 
 int filhoDireito (int i) {
     return 2 * i + 2;
+}
+
+void carregarAeronaves(Heap* heap, char* nome_arquivo) {
+    FILE* arquivo;
+    char linha[50];
+
+    arquivo = fopen(nome_arquivo, "r");
+
+    if (arquivo == NULL) {
+        perror("Erro ao abrir arquivo\n");
+        return;
+    }
+
+    char ID[6];
+    int combustivel;
+    int horario;
+    int tipo;
+    int emergencia;
+
+    while(fgets(linha, sizeof(linha), arquivo) != NULL) {
+
+        int resultado = sscanf(linha, "%5[^,],%d,%d,%d,%d", ID, &combustivel, &horario, &tipo, &emergencia);
+
+        if (resultado == 5) {
+            Aeronave* novaAeronave = criarAeronave(ID, combustivel, horario, tipo, emergencia);
+            inserirAeronave(heap, novaAeronave);
+        } else {
+            printf("erro ao ler aeronave na linha : %s\n", linha);
+            printf("resultado = %d\n", resultado);
+        }
+        
+    }
+    
+    fclose(arquivo);
+
 }
 
 void inserirAeronave(Heap* heap, Aeronave* aeronave) {
