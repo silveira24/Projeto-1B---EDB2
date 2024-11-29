@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "../include/Heap.h"
 
@@ -78,10 +79,10 @@ Aeronave* consultarMaiorPrioridade (Heap* heap) {
     return heap->aeronaves[0];
 }
 
-Aeronave* removerMaiorPrioridade (Heap* heap) {
+void removerMaiorPrioridade (Heap* heap) {
     if (heap->tamanho <= 0) {
         printf("heap vazio\n");
-        return NULL;
+        return;
     }
 
     Aeronave* maximo = heap->aeronaves[0];
@@ -114,7 +115,7 @@ Aeronave* removerMaiorPrioridade (Heap* heap) {
         i = maior;
     }
 
-    return maximo;
+    free(maximo);
 
 }
 
@@ -125,4 +126,72 @@ void exibirHeap(Heap heap) {
         exibirAeronave(heap.aeronaves[i]);
         printf("\n\n");
     }
+}
+
+void liberarHeap(Heap* heap) {
+    for(int i = heap->tamanho-1; i>=0; i--) {
+        free(heap->aeronaves[i]);
+    }
+}
+
+int retornaIndicePeloID(Heap* heap, char* ID) {
+    for (int i = 0; i < heap->tamanho; i++) {
+        if(strcmp(heap->aeronaves[i]->ID, ID) == 0) {
+            return i;
+        }
+    }
+    
+    return -1;
+}
+
+void atualizaAeronavePorID(Heap* heap, char*ID, int combustivel, int horario, int tipo, int emergencia) {
+    int i = retornaIndicePeloID(heap, ID);
+
+    if (i == -1) {
+        printf("Aeronave não encontrada no sistema\n");
+        return;
+    }
+    int antigaPrioridade = heap->aeronaves[i]->prioridade;
+
+    atualizarAeronave(heap->aeronaves[i], combustivel, horario, tipo, emergencia);
+
+    int novaPrioridade = heap->aeronaves[i]->prioridade;
+
+    if (novaPrioridade > antigaPrioridade) {
+        corrigirPraCima(heap, i);
+    } else if (novaPrioridade < antigaPrioridade) {
+        corrigirPraBaixo(heap, i);
+    }
+}
+
+void corrigirPraCima(Heap* heap, int i) {
+    while(i > 0 && heap->aeronaves[pai(i)]->prioridade < heap->aeronaves[i]->prioridade) {
+        trocar(heap->aeronaves[pai(i)], heap->aeronaves[i]);
+        i = pai(i);
+    }
+}
+
+void corrigirPraBaixo(Heap* heap, int i) {
+    int maior = i;
+    int esquerdo = filhoEsquerdo(i);
+    int direito = filhoDireito(i);
+
+    if (esquerdo < heap->tamanho && heap->aeronaves[esquerdo]->prioridade > heap->aeronaves[maior]->prioridade) {
+        maior = esquerdo;
+    }
+
+    if (direito < heap->tamanho && heap->aeronaves[direito]->prioridade > heap->aeronaves[maior]->prioridade) {
+        maior = direito;
+    }
+
+    if (maior != i) {
+        trocar(heap->aeronaves[i], heap->aeronaves[maior]);
+        corrigirPraBaixo(heap, maior);
+    }
+}
+
+void trocar(Aeronave* a, Aeronave* b) {
+    Aeronave temp = *a;
+    *a = *b;
+    *b = temp;
 }

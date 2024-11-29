@@ -46,3 +46,11 @@ void exibirAeronave(Aeronave* aeronave) {
     }
     printf("Prioridade: %d", aeronave->prioridade);
 }
+
+void atualizarAeronave (Aeronave* aeronave, int combustivel, int horario, int tipo, int emergencia) {
+    aeronave->combustivel = combustivel;
+    aeronave->horario = horario;
+    aeronave->tipo = tipo;
+    aeronave->emergencia = emergencia;
+    aeronave->prioridade = calcularPrioridade(aeronave);
+}

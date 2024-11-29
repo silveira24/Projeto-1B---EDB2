@@ -16,7 +16,13 @@ int filhoDireito(int i);
 void carregarAeronaves(Heap* heap, char* nome_arquivo);
 void inserirAeronave(Heap* heap, Aeronave* aeronave);
 Aeronave* consultarMaiorPrioridade (Heap* heap);
-Aeronave* removerMaiorPrioridade (Heap* heap);
+void removerMaiorPrioridade (Heap* heap);
 void exibirHeap(Heap heap);
+void liberarHeap(Heap* heap);
+int retornaIndicePeloID(Heap* heap, char* ID);
+void atualizaAeronavePorID(Heap* heap, char*ID, int combustivel, int horario, int tipo, int emergencia);
+void corrigirPraCima(Heap* heap, int i);
+void corrigirPraBaixo(Heap* heap, int i);
+void trocar(Aeronave* a, Aeronave* b);
 
 #endif
