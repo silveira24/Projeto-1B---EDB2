@@ -63,6 +63,12 @@ void inserirAeronave(Heap* heap, Aeronave* aeronave) {
         return;
     }
 
+    if (retornaIndicePeloID(heap, aeronave->ID) != -1) {
+        printf("Voo com mesmo identificador já cadastrado no sistema\n");
+        free(aeronave);
+        return;
+    }
+
     int i = heap->tamanho;
     heap->aeronaves[i] = aeronave;
     heap->tamanho++;
@@ -90,30 +96,7 @@ void removerMaiorPrioridade (Heap* heap) {
     heap->aeronaves[0] = heap->aeronaves[heap->tamanho-1];
     heap->tamanho--;
 
-    int i = 0;
-    while(1) {
-        int esquerdo = filhoEsquerdo(i);
-        int direito = filhoDireito(i);
-        int maior = i;
-
-        if (esquerdo < heap->tamanho && heap->aeronaves[esquerdo]->prioridade > heap->aeronaves[maior]->prioridade) {
-            maior = esquerdo;
-        }
-
-        if (direito < heap->tamanho && heap->aeronaves[direito]->prioridade > heap->aeronaves[maior]->prioridade) {
-            maior = esquerdo;
-        }
-
-        if (maior == i) {
-            break;
-        }
-
-        Aeronave* temp = heap->aeronaves[i];
-        heap->aeronaves[i] = heap->aeronaves[maior];
-        heap->aeronaves[maior] = temp;
-
-        i = maior;
-    }
+    corrigirPraBaixo(heap, 0);
 
     free(maximo);
 
@@ -148,7 +131,7 @@ void atualizaAeronavePorID(Heap* heap, char*ID, int combustivel, int horario, in
     int i = retornaIndicePeloID(heap, ID);
 
     if (i == -1) {
-        printf("Aeronave não encontrada no sistema\n");
+        printf("Voo não encontrado no sistema\n");
         return;
     }
     int antigaPrioridade = heap->aeronaves[i]->prioridade;

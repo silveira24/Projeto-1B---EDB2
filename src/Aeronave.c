@@ -44,7 +44,7 @@ void exibirAeronave(Aeronave* aeronave) {
     } else {
         printf("Aeronave está em situação de emergência\n");
     }
-    printf("Prioridade: %d", aeronave->prioridade);
+    printf("Prioridade: %d\n\n", aeronave->prioridade);
 }
 
 void atualizarAeronave (Aeronave* aeronave, int combustivel, int horario, int tipo, int emergencia) {

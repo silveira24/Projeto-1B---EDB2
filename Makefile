@@ -6,10 +6,10 @@ SRC_DIR = src
 INCLUDE_DIR = include
 
 # Arquivos fonte
-SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/Aeronave.c $(SRC_DIR)/Heap.c
+SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/Aeronave.c $(SRC_DIR)/Heap.c $(SRC_DIR)/Menu.c 
 
 # Arquivos objeto
-OBJS = main.o Aeronave.o Heap.o
+OBJS = main.o Aeronave.o Heap.o Menu.o 
 
 # Compilador e flags
 CC = gcc

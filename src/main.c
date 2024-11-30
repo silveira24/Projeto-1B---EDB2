@@ -3,32 +3,46 @@
 #include <string.h>
 
 #include "../include/Heap.h"
+#include "../include/Menu.h"
 
 int main() {
     
     Heap heap = inicializarHeap();
 
-    Aeronave* a1 = criarAeronave("NAVE1", 200, 300, 1, 0);
-    Aeronave* a2 = criarAeronave("NAVE2", 199, 300, 1, 0);
-    Aeronave* a3 = criarAeronave("NAVE3", 300, 300, 1, 0);
-    Aeronave* a4 = criarAeronave("NAVE4", 150, 300, 1, 0);
-    Aeronave* a5 = criarAeronave("NAVE5", 100, 300, 1, 0);
-    Aeronave* a6 = criarAeronave("NAVE6", 70, 300, 1, 0);
-    Aeronave* a7 = criarAeronave("NAVE7", 50, 300, 1, 0);
+    carregarAeronaves(&heap, "teste.csv");
 
-    inserirAeronave(&heap, a1);
-    inserirAeronave(&heap, a2);
-    inserirAeronave(&heap, a3);
-    inserirAeronave(&heap, a4);
-    inserirAeronave(&heap, a5);
-    inserirAeronave(&heap, a6);
-    inserirAeronave(&heap, a7);
+    int menu;
 
+    exibirMenu();
+    scanf("%d", &menu);
 
-    atualizaAeronavePorID(&heap, "NAVE3", 60, 300, 1, 0);
+    while (menu != 0) {
+        switch (menu) {
+        case 1:
+            inserirAeronave(&heap, adicionarAeronave());
+            break;
+        case 2:
+            exibirAeronave(consultarMaiorPrioridade(&heap));
+            break;
+        case 3:
+            removerMaiorPrioridade(&heap);
+            break;
+        case 4:
+            atualizacaoAeronave(&heap);
+            break;
+        case 5:
+            exibirHeap(heap);
+            break;
+        default:
+            printf("Comando inválido, tente novamente\n");
+            break;
+        }
 
-    exibirHeap(heap);
-
+        exibirMenu();
+        scanf("%d", &menu);
+    }
+    
+    printf("saindo do sistema...\n");
     liberarHeap(&heap);
 
     return 0;
