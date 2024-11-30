@@ -9,7 +9,7 @@ int main() {
     
     Heap heap = inicializarHeap();
 
-    carregarAeronaves(&heap, "teste.csv");
+    carregarAeronaves(&heap, "voos.csv");
 
     int menu;
 
